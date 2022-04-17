@@ -1,3 +1,3 @@
 # BoomBall
 
-##Firebase deploy: https://boom-ball-game.web.app/
+## Firebase deploy: https://boom-ball-game.web.app/
