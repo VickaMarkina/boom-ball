@@ -1,6 +1,7 @@
 
 import { Component, HostListener, OnInit, } from '@angular/core';
 import {gsap} from 'gsap';
+import { interval } from 'rxjs';
 import { Enemy } from './enemy-class';
 import { Particle } from './particle-class';
 import { Player } from './player-class';
@@ -26,6 +27,8 @@ export class GameComponent implements OnInit {
 
   animationId! : any;
   score: number = 0;
+  interval!: number;
+  intervalId!: any;
 
   modalEl!: HTMLElement;
   
@@ -63,7 +66,8 @@ export class GameComponent implements OnInit {
   }
 
   spawnEnemies(){
-    const interval = window.screen.width > 500 ? 1000 : 700
+    this.interval = window.screen.width > 800 ? 1000 : 400
+
     setInterval(() => {
       const radius = Math.random() * (30 - 4) + 4;
       let x
@@ -88,7 +92,7 @@ export class GameComponent implements OnInit {
       }
     
       this.enemies.push(new Enemy(x, y, radius, color, this.context, velocity))
-    }, interval)
+    }, this.interval)
   }
 
   animate() {   
@@ -123,7 +127,7 @@ export class GameComponent implements OnInit {
       if(dist - enemy.radius - this.player.radius < 1){
         cancelAnimationFrame(this.animationId);
         this.modalEl.style.display = 'flex';
-
+        clearInterval(this.intervalId)
       }
 
       this.projectiles.forEach((projectile, projectileIndex) => {
@@ -202,6 +206,11 @@ export class GameComponent implements OnInit {
     this.spawnEnemies();
     this.modalEl.style.display = 'none'
     this.score = 0;
+    this.interval = window.screen.width > 800 ? 1000 : 400
+    this.intervalId = setInterval(() =>{
+      this.interval -= 10
+      console.log(this.interval)
+    },1000)
   }
   
 }
