@@ -27,7 +27,7 @@ export class GameComponent implements OnInit {
   animationId! : any;
   score: number = 0;
 
-  scoreEl!: HTMLElement;
+  modalEl!: HTMLElement;
   
   constructor() { 
   }
@@ -45,10 +45,16 @@ export class GameComponent implements OnInit {
     this.canvas = canvas;
     this.context = context;
 
+    this.modalEl = document.querySelector('#modalEl') as HTMLElement;
+
     this.createPlayer();
     this.createProjectiles();
-    this.animate();
-    this.spawnEnemies();
+  }
+
+  init(){
+    this.projectiles = [];
+    this.particles = [];
+    this.enemies = [];
   }
 
   createPlayer() {
@@ -114,7 +120,9 @@ export class GameComponent implements OnInit {
       const dist =  Math.hypot(this.player.x - enemy.x, this.player.y - enemy.y)
 
       if(dist - enemy.radius - this.player.radius < 1){
-        cancelAnimationFrame(this.animationId)
+        cancelAnimationFrame(this.animationId);
+        this.modalEl.style.display = 'flex';
+
       }
 
       this.projectiles.forEach((projectile, projectileIndex) => {
@@ -166,6 +174,14 @@ export class GameComponent implements OnInit {
 
       this.projectiles.push(new Projectile(this.x, this.y, 5, 'white', this.context, velocity))
     })
+  }
+
+  startGame() {
+    this.init();
+    this.animate();
+    this.spawnEnemies();
+    this.modalEl.style.display = 'none'
+    this.score = 0;
   }
   
 }
