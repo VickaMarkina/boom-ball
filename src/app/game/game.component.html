@@ -1,3 +1,11 @@
-<canvas class="canvas">
-  <h1 class="h">d</h1>
-</canvas>
+<div class="score"><span>Score:</span><span id="scoreEl">{{score}}</span></div>
+
+<div class="start">
+  <div class="start__container">
+    <h1 class="start__score">{{score}}</h1>
+    <p class="start__text">Points</p>
+    <div class="start__btn"><button (click)="startGame()">Start game</button></div>
+  </div>
+</div>
+
+<canvas></canvas>
