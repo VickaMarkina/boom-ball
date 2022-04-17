@@ -1,5 +1,5 @@
 
-import { Component, OnInit, } from '@angular/core';
+import { Component, HostListener, OnInit, } from '@angular/core';
 import {gsap} from 'gsap';
 import { Enemy } from './enemy-class';
 import { Particle } from './particle-class';
@@ -63,6 +63,7 @@ export class GameComponent implements OnInit {
   }
 
   spawnEnemies(){
+    const interval = window.screen.width > 500 ? 1000 : 700
     setInterval(() => {
       const radius = Math.random() * (30 - 4) + 4;
       let x
@@ -87,7 +88,7 @@ export class GameComponent implements OnInit {
       }
     
       this.enemies.push(new Enemy(x, y, radius, color, this.context, velocity))
-    }, 1000)
+    }, interval)
   }
 
   animate() {   
@@ -174,7 +175,26 @@ export class GameComponent implements OnInit {
 
       this.projectiles.push(new Projectile(this.x, this.y, 5, 'white', this.context, velocity))
     })
+
+    addEventListener('touchstart', (event) => {
+      let touch = event.touches[0]
+      const angle = Math.atan2(
+        touch.clientY - this.y,
+        touch.clientX - this.x
+        )
+        const velocity = {
+          x: Math.cos(angle) * 5,
+          y: Math.sin(angle) * 5
+        }
+        
+        this.projectiles.push(new Projectile(this.x, this.y, 5, 'white', this.context, velocity))
+        console.log(this.projectiles)
+    })
   }
+
+
+
+  
 
   startGame() {
     this.init();
